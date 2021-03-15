@@ -25,7 +25,7 @@ d3.select("#clearButton").on("click", function () {
 
 // Put everything inside a closure
 function CreateNewSimulation() {
-    var svg, graphInfo, xScale, yScale, line, xExtent, yExtent;
+    var svg, graphInfo, xScale, yScale, line, xExtent, yExtent, allData = [];
 
     function Initialize(graph) {
         svg = graph;
@@ -82,14 +82,17 @@ function CreateNewSimulation() {
         var currInterestRate = startingRate;
         for (let j = 1; j <= timeSteps; j++) {
             let normVar = GetNormalRandomVariable(0, 1);
-            currInterestRate = currInterestRate +
-                (meanReversionSpeed * (meanInterestRate - currInterestRate) * deltaT +
-                volatility * normVar);
+            // Approximation of drt = a(b - rt)dt + sigma*dwt (see: https://en.wikipedia.org/wiki/Vasicek_model)
+            let change = meanReversionSpeed * (meanInterestRate - currInterestRate) * deltaT
+                + volatility * normVar * Math.sqrt(deltaT);
+            currInterestRate = currInterestRate + change
             data.push({ orient: 'left', name: (currInterestRate * 100).toFixed(2), x: deltaT * j, y: currInterestRate * 100 })
         }
 
-        let currXExtent = d3.extent(data, d => d.x);
-        let currYExtent = d3.extent(data, d => d.y);
+        allData = allData.concat(data);
+
+        let currXExtent = d3.extent(allData, d => d.x);
+        let currYExtent = d3.extent(allData, d => d.y);
 
         if (xExtent == null || yExtent == null ||
             currXExtent[0] != xExtent[0] || currXExtent[1] != xExtent[1] ||
@@ -250,6 +253,7 @@ function CreateNewSimulation() {
         svg.selectAll("svg > *").remove();
         ResetAxisScale(8, 14);
         AddAxis(xScale, yScale);
+        allData = [];
     }
 
     // Determine the length of the given path
