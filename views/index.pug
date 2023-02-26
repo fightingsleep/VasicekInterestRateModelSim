@@ -1,0 +1,48 @@
+extends ./layouts/layout
+
+block content
+
+  div.container-fluid
+    div.row
+      div.col-12.col-sm-12.col-md-12.col-lg-12.col-xl-12.p-4.mb-1.bg-light.border.rounded-3
+        h1.display-5 Vasicek Interest Rate Model
+    div.row
+      div.btn-group.col-12.col-sm-12.col-md-8.col-lg-4.col-xl-3.mb-1
+        button.btn.btn-outline-secondary(data-bs-toggle="collapse" data-bs-target="#collapseInputs") Config
+        button.btn.btn-outline-primary#runButton Run
+        button.btn.btn-outline-primary#clearButton Clear
+    div.row
+      div.col-12.col-sm-10.col-md-7.col-lg-5.col-xl-5
+        div.collapse#collapseInputs
+          div.input-group.mb-1
+            div.input-group-prepend
+              span.input-group-text#startingInterestRate Starting Interest Rate: 
+            input.form-control#startingInterestRateInput(type="number" value="0.08" placeholder="Starting Interest Rate")
+          div.input-group.mb-1
+            div.input-group-prepend
+              span.input-group-text#meanInterestRate Long Term Mean Interest Rate: 
+            input.form-control#meanInterestRateInput(type="number" value="0.04" placeholder="Long Term Mean Interest Rate")
+          div.input-group.mb-1
+            div.input-group-prepend
+              span.input-group-text#meanReversionSpeed Speed of Mean Reversion: 
+            input.form-control#meanReversionSpeedInput(type="number" value="2" placeholder="Speed of Mean Reversion")
+          div.input-group.mb-1
+            div.input-group-prepend
+              span.input-group-text#volatility Volatility: 
+            input.form-control#volatilityInput(type="number" value="0.002" step="0.1" placeholder="Volatility")
+          div.input-group.mb-1
+            div.input-group-prepend
+              span.input-group-text#term Term: 
+            input.form-control#termInput(type="number" value="14" placeholder="Term")
+          div.input-group.mb-1
+            div.input-group-prepend
+              span.input-group-text#timeSteps Time Steps: 
+            input.form-control#timeStepsInput(type="number" value="300" placeholder="Time Steps")
+    div.row
+      div#graphContainer.col-12.col-sm-12.col-md-12.col-lg-9.col-xl-9
+
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.slim.min.js")
+  script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous")
+  script(src="https://d3js.org/d3.v7.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.6.1/randomColor.min.js" integrity="sha512-vPeZ7JCboHcfpqSx5ZD+/jpEhS4JpXxfz9orSvAPPj0EKUVShU2tgy7XkU+oujBJKnWmu4hU7r9MMQNWPfXsYw==" crossorigin="anonymous")
+  script(src="scripts/graph.js")
